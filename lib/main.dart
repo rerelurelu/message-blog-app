@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './views/home_view.dart';
+import 'package:message_blog/views/auth_view.dart';
 
 void main() {
   runApp(MessageBlogApp());
@@ -12,8 +12,8 @@ class MessageBlogApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Message Blog',
-      theme: ThemeData.dark(),
-      home: HomeView(),
+      theme: ThemeData.light(),
+      home: AuthView(),
     );
   }
 }
