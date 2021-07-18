@@ -14,7 +14,9 @@ class HomeView extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [],
+          children: [
+            Text('Home Screen'),
+          ],
         ),
       ),
     );

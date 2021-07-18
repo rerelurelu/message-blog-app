@@ -1,12 +1,36 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthController extends StateNotifier<GoogleSignInAccount?> {
-  AuthController({GoogleSignInAccount? account}) : super(account) {
-    _googleSignIn.onCurrentUserChanged.listen((account) {
-      state = _googleSignIn.currentUser;
-    });
+final googleAuthProvider = ChangeNotifierProvider((ref) => GoogleSignInProvider());
+
+class GoogleSignInProvider extends ChangeNotifier {
+  final googleSignIn = GoogleSignIn();
+
+  GoogleSignInAccount? _user;
+  GoogleSignInAccount get user => _user!;
+
+  Future googleLogin() async {
+    final googleUser = await googleSignIn.signIn();
+
+    if (googleUser == null) return;
+    _user = googleUser;
+
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    notifyListeners();
   }
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  Future logout() async {
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
+  }
 }

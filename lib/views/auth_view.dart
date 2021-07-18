@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:message_blog/providers/user_provider.dart';
 
-class AuthView extends StatefulWidget {
+class AuthView extends ConsumerWidget {
   const AuthView({Key? key}) : super(key: key);
 
   @override
-  _AuthViewState createState() => _AuthViewState();
-}
-
-class _AuthViewState extends State<AuthView> {
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final googleAuth = watch(googleAuthProvider);
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
-              child: Text('Sign In with Google'),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.black,
+                minimumSize: Size(double.infinity, 50),
+              ),
+              icon: FaIcon(
+                FontAwesomeIcons.google,
+                color: Colors.redAccent,
+              ),
+              label: Text('Sign In with Google'),
               onPressed: () async {
-                await _googleSignIn.signIn();
-                setState(() {});
+                await googleAuth.googleLogin();
               },
             ),
             ElevatedButton(
               child: Text('Sign Out'),
               onPressed: () async {
-                await _googleSignIn.signOut();
-                setState(() {});
+                await googleAuth.logout();
               },
             ),
           ],
