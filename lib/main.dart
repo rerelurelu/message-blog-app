@@ -34,8 +34,9 @@ class CheckLogin extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final user = watch(googleAuthProvider);
+    final _googleAuth = watch(googleAuthProvider);
+    bool isSignIn = _googleAuth.isSignIn;
 
-    return user == null ? AuthView() : HomeView();
+    return isSignIn ? HomeView() : AuthView();
   }
 }

@@ -26,14 +26,14 @@ class AuthView extends ConsumerWidget {
                 color: Colors.redAccent,
               ),
               label: Text('Sign In with Google'),
-              onPressed: () async {
-                await googleAuth.googleLogin();
+              onPressed: () {
+                googleAuth.googleLogin();
               },
             ),
             ElevatedButton(
               child: Text('Sign Out'),
-              onPressed: () async {
-                await googleAuth.logout();
+              onPressed: () {
+                googleAuth.logout();
               },
             ),
           ],
